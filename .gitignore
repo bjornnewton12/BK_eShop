@@ -1,0 +1,17 @@
+# Ignore Visual Studio cache
+.vs/
+
+# Build outputs
+bin/
+obj/
+
+# User-specific settings
+*.user
+*.suo
+
+# Build logs
+*.log
+
+# NuGet
+*.nupkg
+.project.nuget.cache
