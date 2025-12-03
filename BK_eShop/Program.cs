@@ -1,5 +1,6 @@
 ﻿using BK_eShop;
 using BK_eShop.Data;
+using BK_eShop.Helpers;
 using BK_eShop.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,44 +24,7 @@ while (true)
     {
         // Customer commands
         case "1":
-            Console.WriteLine("\nCustomer commands: 1. List customers | 2. Add customer | 3. Edit customer | 4. Delete customer | 5. Orders per customers | 6. Exit to main menu");
-            Console.Write("> ");
-
-            var customerInput = Console.ReadLine();
-
-            // Skip empty rows
-            if (string.IsNullOrEmpty(customerInput))
-            {
-                continue;
-            }
-
-            // Exit to main menu
-            if (customerInput.Equals("6"))
-            {
-                break;
-            }
-
-            var customerParts = customerInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            var customerCommand = customerParts[0].ToLowerInvariant();
-
-            switch (customerCommand)
-            {
-                case "1":
-                    // List customers
-                    break;
-                case "2":
-                    // Add customer
-                    break;
-                case "3":
-                    // Edit customer
-                    break;
-                case "4":
-                    // Delete customer
-                    break;
-                case "5":
-                    // Order count
-                    break;
-            }
+            await CustomerHelper.CustomerCommandAsync();
             break;
 
         // Order commands
