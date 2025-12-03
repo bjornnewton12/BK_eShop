@@ -123,8 +123,10 @@ while (true)
             switch(productCommand)
             {
             case "1":
+                // List products
                 break;
             case "2":
+                // Add product
                 break;
             }
 
