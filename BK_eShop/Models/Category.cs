@@ -15,4 +15,3 @@ namespace BK_eShop.Models
         public string CategoryName { get; set; } = null!;
     }
 }
-}

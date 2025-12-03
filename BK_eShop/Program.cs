@@ -1,2 +1,101 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using BK_eShop;
+using BK_eShop.Models;
+using System.ComponentModel.DataAnnotations;
+
+// CLI
+while (true)
+{
+    Console.WriteLine($"\nCommands: 1. Customers | 2. Orders");
+    Console.Write(">");
+    var firstCommand = Console.ReadLine();
+
+    // Skip empty rows
+    if (string.IsNullOrEmpty(firstCommand))
+    {
+        continue;
+    }
+
+    switch (firstCommand)
+    {
+        // Customer commands
+        case "1":
+            Console.WriteLine("\nCustomer commands: 1. List customers | 2. Add customer | 3. Edit customer | 4. Delete customer | 5. Orders per customers | 6. Exit to main menu");
+            Console.Write("> ");
+
+            var customerInput = Console.ReadLine();
+
+            // Skip empty rows
+            if (string.IsNullOrEmpty(customerInput))
+            {
+                continue;
+            }
+
+            // Exit to main menu
+            if (customerInput.Equals("6"))
+            {
+                break;
+            }
+
+            var customerParts = customerInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var customerCommand = customerParts[0].ToLowerInvariant();
+
+            switch (customerCommand)
+            {
+                case "1":
+                    // List customers
+                    break;
+                case "2":
+                    // Add customer
+                    break;
+                case "3":
+                    // Edit customer
+                    break;
+                case "4":
+                    // Delete customer
+                    break;
+                case "5":
+                    // Order count
+                    break;
+            }
+            break;
+
+        // Order commands
+        case "2":
+            Console.WriteLine("\nOrder commands: 1. List orders | 2. Product list | 3. Add order | 4. Delete order | 5. Exit to main menu");
+            Console.Write("> ");
+
+            var orderInput = Console.ReadLine();
+
+            // Skip empty rows
+            if (string.IsNullOrEmpty(orderInput))
+            {
+                continue;
+            }
+
+            // Exit to main menu
+            if (orderInput.Equals("5"))
+            {
+                break;
+            }
+
+            var orderParts = orderInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var orderCommand = orderParts[0].ToLowerInvariant();
+
+            switch (orderCommand)
+            {
+                case "1":
+                    // List orders
+                    break;
+                    // Product list
+                case "2":
+                    break;
+                case "3":
+                    // Add order
+                    break;
+                case "4":
+                    // Delete order
+                    break;
+            }
+            break;
+    }
+}

@@ -67,6 +67,8 @@ namespace BK_eShop
                 p.Property(x => x.ProductName).IsRequired().HasMaxLength(150);
                 p.Property(x => x.ProductPrice).IsRequired();
                 p.Property(x => x.ProductStock).IsRequired();
+
+                p.HasIndex(x => x.ProductName).IsUnique();
             });
 
 
