@@ -15,6 +15,7 @@ namespace BK_eShop
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderRow> OrderRows => Set<OrderRow>();
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<Category> Categories => Set<Category>();
         public DbSet<OrderSummary> OrderSummaries => Set<OrderSummary>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -35,6 +36,7 @@ namespace BK_eShop
                 c.Property(x => x.CustomerPhone).IsRequired();
                 c.Property(x => x.CustomerEmail).IsRequired().HasMaxLength(150);
 
+                // Is unique
                 c.HasIndex(x => x.CustomerEmail).IsUnique();
             });
 
@@ -68,9 +70,21 @@ namespace BK_eShop
                 p.Property(x => x.ProductPrice).IsRequired();
                 p.Property(x => x.ProductStock).IsRequired();
 
+                // Is unique
                 p.HasIndex(x => x.ProductName).IsUnique();
             });
 
+            modelBuilder.Entity<Category>(t =>
+            {
+                // PK
+                t.HasKey(x => x.CategoryId);
+
+                // Properties
+                t.Property(x => x.CategoryName).IsRequired();
+
+                // Is unique
+                t.HasIndex(x => x.CategoryName).IsUnique();
+            });
 
             /*// Order Summary
             modelBuilder.Entity<OrderSummary>(e =>
