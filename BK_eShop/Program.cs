@@ -1,6 +1,10 @@
 ﻿using BK_eShop;
+using BK_eShop.Data;
 using BK_eShop.Models;
 using System.ComponentModel.DataAnnotations;
+
+Console.WriteLine("DB: " + Path.Combine(AppContext.BaseDirectory, "shop.db"));
+await Seeding.SeedAsync();
 
 // CLI
 while (true)

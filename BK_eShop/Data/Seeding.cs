@@ -30,18 +30,24 @@ namespace BK_eShop.Data
             {
                 db.Categories.AddRange(
                     new Category { CategoryName = "Paintings" },
-                    new Category { CategoryName = "Shoes" }
+                    new Category { CategoryName = "Blazers" }
                 );
+                await db.SaveChangesAsync();
+                Console.WriteLine("Seeded categories db");
             }
 
             if (!await db.Products.AnyAsync())
             {
-                db.Products.AddRange(
-                    new Product { ProductName = "Monét painting", ProductPrice = 45000M, ProductStock = 5 },
-                    new Product { ProductName = "Louboutins", ProductPrice = 900M, ProductStock = 100 }
-                );
-            }
+                var paintings = await db.Categories.FirstAsync(t => t.CategoryName == "Paintings");
+                var shoes = await db.Categories.FirstAsync(t => t.CategoryName == "Blazers");
 
+                db.Products.AddRange(
+                    new Product { ProductName = "Monét painting", ProductPrice = 45000M, ProductStock = 5, CategoryId = 1 },
+                    new Product { ProductName = "Plaid blazer", ProductPrice = 900M, ProductStock = 100 , CategoryId = 2}
+                );
+                await db.SaveChangesAsync();
+                Console.WriteLine("Seeded products db");
+            }
         }
     }
 }
