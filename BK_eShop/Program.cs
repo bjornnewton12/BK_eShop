@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 // CLI
 while (true)
 {
-    Console.WriteLine($"\nCommands: 1. Customers | 2. Orders");
+    Console.WriteLine($"\nCommands: 1. Customers | 2. Orders | 3. Products");
     Console.Write(">");
     var firstCommand = Console.ReadLine();
 
@@ -96,6 +96,38 @@ while (true)
                     // Delete order
                     break;
             }
+            break;
+
+        // Product commands
+        case "3":
+            Console.WriteLine("\nCustomer commands: 1. List products | 2. Add Product | 3. Exit to main menu");
+            Console.Write("> ");
+
+            var productInput = Console.ReadLine();
+
+            // Skip empty rows
+            if (string.IsNullOrEmpty(productInput))
+            {
+                continue;
+            }
+
+            // Exit to main menu
+            if (productInput.Equals("3"))
+            {
+                break;
+            }
+
+            var productParts = productInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var productCommand = productParts[0].ToLowerInvariant();
+
+            switch(productCommand)
+            {
+            case "1":
+                break;
+            case "2":
+                break;
+            }
+
             break;
     }
 }
