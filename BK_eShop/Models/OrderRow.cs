@@ -13,6 +13,8 @@ namespace BK_eShop.Models
         public int OrderRowId { get; set; }
         [Required]
         public int OrderRowQuantity { get; set; }
+        [Required]
+        public decimal OrderRowUnitPrice { get; set; }
 
         // FK
         public int? OrderId { get; set; }
