@@ -12,7 +12,7 @@ namespace BK_eShop.Models
         // PK
         public int OrderId { get; set; }
         [Required]
-        public int OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         [Required]
         public string OrderStatus { get; set; } = null!;
         [Required]
@@ -21,6 +21,9 @@ namespace BK_eShop.Models
         //FK
         public int? CustomerId { get; set; }
         public Customer? Customer { get; set; }
+
+        // Navigation
+        public List<OrderRow> OrderRows { get; set; } = new();
 
     }
 }

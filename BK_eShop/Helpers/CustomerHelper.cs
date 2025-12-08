@@ -12,67 +12,6 @@ namespace BK_eShop.Helpers
 {
     public static class CustomerHelper
     {
-        public static async Task CustomerCommandAsync()
-        {
-            while (true)
-            {
-                Console.WriteLine("\nCustomer commands: 1. List customers | 2. Add customer | 3. Edit customer | 4. Delete customer | 5. Orders per customers | 6. Exit to main menu");
-                Console.Write("> ");
-
-                var customerInput = Console.ReadLine();
-
-                // Skip empty rows
-                if (string.IsNullOrEmpty(customerInput))
-                {
-                    continue;
-                }
-
-                // Exit to main menu
-                if (customerInput.Equals("6"))
-                {
-                    break;
-                }
-
-                var customerParts = customerInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                var customerCommand = customerParts[0].ToLowerInvariant();
-
-                switch (customerCommand)
-                {
-                    case "1":
-                        // List customers
-                        await ListCustomersAsync();
-                        break;
-                    case "2":
-                        // Add customer
-                        await AddCustomerAsync();
-                        break;
-                    case "3":
-                        // Edit customer
-                        if (customerParts.Length < 2 || !int.TryParse(customerParts[1], out var idE))
-                        {
-                            Console.WriteLine("No customers to edit");
-                            break;
-                        }
-                        await EditCustomerAsync(idE);
-                        break;
-                    case "4":
-                        // Delete customer
-                        if (customerParts.Length < 2 || !int.TryParse(customerParts[1], out var idD))
-                        {
-                            Console.WriteLine("No customers to delete");
-                            break;
-                        }
-                        await DeleteCustomerAsync(idD);
-                        break;
-                    case "5":
-                        // Order count
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
         // List customers
         public static async Task ListCustomersAsync()
         {
@@ -98,9 +37,9 @@ namespace BK_eShop.Helpers
                 return;
             }
 
-            // TODO Add phone
-            //Console.Write("Phone number: ");
-            
+            Console.Write("Phone number: ");
+            var customerPhone = Console.ReadLine()?.Trim() ?? string.Empty;
+
 
             Console.Write("Email: ");
             var customerEmail = Console.ReadLine()?.Trim() ?? string.Empty;
@@ -111,7 +50,7 @@ namespace BK_eShop.Helpers
             }
 
             using var db = new ShopContext();
-            db.Customers.Add(new Customer { CustomerName = customerName, CustomerEmail = customerEmail });
+            db.Customers.Add(new Customer { CustomerName = customerName, CustomerEmail = customerEmail, CustomerPhone = customerPhone});
 
             // Save changes
             try
@@ -148,6 +87,13 @@ namespace BK_eShop.Helpers
             }
 
             // TODO Change customer phone 
+            Console.WriteLine($"Previous phone number: {customer.CustomerPhone}");
+            Console.Write("New phone number: ");
+            var customerPhone = Console.ReadLine()?.Trim() ?? string.Empty;
+            if (!string.IsNullOrEmpty(customerPhone))
+            {
+                customer.CustomerPhone = customerPhone;
+            }
 
             // Change customer email
             Console.WriteLine($"Previous email: {customer.CustomerEmail}");

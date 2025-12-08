@@ -15,7 +15,7 @@ namespace BK_eShop.Models
         [Required, MaxLength(150)]
         public string CustomerName { get; set; } = null!;
 
-        public int CustomerPhone { get; set; }
+        public string CustomerPhone { get; set; } = null!;
 
         [Required, MaxLength(150)]
         public string CustomerEmail { get; set; } = null!;
