@@ -4,6 +4,7 @@ using BK_eShop.Helpers;
 using BK_eShop.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Intrinsics.Arm;
 
 Console.WriteLine("DB: " + Path.Combine(AppContext.BaseDirectory, "shop.db"));
 await Seeding.SeedAsync();
@@ -128,13 +129,23 @@ while (true)
                     break;
                 case "3":
                     // Delete order
+                    await OrderHelper.ListOrdersAsync();
+                    Console.Write("Select order Id to delete: ");
+                    var deleteOrderInput = Console.ReadLine();
+
+                    if (!int.TryParse(deleteOrderInput, out var idO))
+                    {
+                        Console.WriteLine("There is no order with that Id");
+                        break;
+                    }
+                    await OrderHelper.DeleteOrderAsync(idO);
                     break;
             }
             break;
 
         // Product commands
         case "3":
-            Console.WriteLine("\nProduct commands: 1. List products | 2. Add Product | 3. Exit to main menu");
+            Console.WriteLine("\nProduct commands: 1. List products | 2. Add Product | 3. Delete product | 4. Exit to main menu");
             Console.Write("> ");
 
             var productInput = Console.ReadLine();
@@ -146,7 +157,7 @@ while (true)
             }
 
             // Exit to main menu
-            if (productInput.Equals("3"))
+            if (productInput.Equals("4"))
             {
                 break;
             }
@@ -163,6 +174,19 @@ while (true)
             case "2":
                 // Add product
                 await ProductHelper.AddProductAsync();
+                break;
+            case "3":
+                    //Delete product
+                    await ProductHelper.ListProductsAsync();
+                    Console.Write("\nEnter product Id to delete: ");
+                    var deleteProductInput = Console.ReadLine();
+
+                    if (!int.TryParse(deleteProductInput, out var idDp))
+                    {
+                        Console.WriteLine("There is no product with that Id");
+                        break;
+                    }
+                    await ProductHelper.DeleteProductAsync(idDp);
                 break;
             }
             break;
@@ -201,7 +225,8 @@ while (true)
                     break;
                 case "3":
                     // Delete category
-                    Console.Write("Enter category Id to edit: ");
+                    await CategoryHelper.ListCategoriesAsync();
+                    Console.Write("\nEnter category Id to delete: ");
                     var deleteCategoryInput = Console.ReadLine();
 
                     if (!int.TryParse(deleteCategoryInput, out var idDc))
@@ -215,8 +240,3 @@ while (true)
             break;
     }
 }
-
-
-/*
-
- */

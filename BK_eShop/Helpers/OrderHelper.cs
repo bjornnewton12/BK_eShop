@@ -66,7 +66,7 @@ namespace BK_eShop.Helpers
 
                 Console.Write("Select quantity: ");
                 var oQuantity = Console.ReadLine();
-                if(!int.TryParse(oQuantity, out var orderQuantity))
+                if (!int.TryParse(oQuantity, out var orderQuantity))
                 {
                     Console.WriteLine("You need to input numbers");
                     continue;
@@ -75,9 +75,10 @@ namespace BK_eShop.Helpers
                 if (orderQuantity <= 0)
                 {
                     Console.WriteLine("Quantity must be a positive number");
+                    continue;
                 }
 
-                if (await db.Products.AnyAsync(p => p.ProductStock < orderQuantity))
+                if (product.ProductStock < orderQuantity)
                 {
                     Console.WriteLine("Order quantity cannot exceed product quantity!");
                     continue;
@@ -85,38 +86,57 @@ namespace BK_eShop.Helpers
 
                 var oRow = new OrderRow
                 {
-                    OrderId = order.OrderId,
                     ProductId = product.ProductId,
                     OrderRowQuantity = orderQuantity,
-                    OrderRowUnitPrice = product.ProductPrice
+                    OrderRowUnitPrice = product.ProductPrice,
+                    Order = order
                 };
 
                 orderRows.Add(oRow);
 
                 Console.WriteLine("Would you like to add another product to your order? (1. Yes | 2. No)");
-                choice = Console.ReadLine();
-                if (choice == "1")
-                {
-                    continue;
-                }
-                else if (choice == "2")
-                {
-                    break;
-                }
+                choice = Console.ReadLine() ?? "2";
+
+            }
                 order.OrderRows = orderRows;
                 db.Orders.Add(order);
 
-                try
-                {
-                    await db.SaveChangesAsync();
-                    Console.WriteLine($"Order complete - Order ID: {order.OrderId}");
-                }
-                catch (DbUpdateException ex)
-                {
-                    Console.WriteLine("Db Error: " + ex.GetBaseException().Message);
-                }
+            try
+            {
+                await db.SaveChangesAsync();
+                Console.WriteLine($"Order complete - Order ID: {order.OrderId}");
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine("Db Error: " + ex.GetBaseException().Message);
+            }
+            
+        }
+
+        // Delete order
+        public static async Task DeleteOrderAsync(int idO)
+        {
+            using var db = new ShopContext();
+
+            var order = await db.Orders.FirstOrDefaultAsync(x => x.OrderId == idO);
+            if (order == null)
+            {
+                Console.WriteLine("Order not found");
+                return;
+            }
+
+            db.Orders.Remove(order);
+
+            // Save changes
+            try
+            {
+                await db.SaveChangesAsync();
+                Console.WriteLine("Order deleted");
+            }
+            catch (DbUpdateException exception)
+            {
+                Console.WriteLine("DB error: " + exception.GetBaseException().Message);
             }
         }
     }
 }
-

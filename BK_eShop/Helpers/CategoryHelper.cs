@@ -60,7 +60,7 @@ namespace BK_eShop.Helpers
                 return;
             }
 
-            var categoryWithProduct = await db.Products.AnyAsync(p => p.ProductId == idDc);
+            var categoryWithProduct = await db.Products.AnyAsync(p => p.CategoryId == idDc);
             if (categoryWithProduct)
             {
                 Console.WriteLine("Category has one or several products attached and cannot be deleted");

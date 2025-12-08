@@ -20,7 +20,9 @@ namespace BK_eShop.Models
 
         // FK
         public int? CategoryId { get; set; }
-        public Category? Category { get; set; }
+
+
+        public Category? Categories { get; set; }
         public List<OrderRow> OrderRows { get; set; } = null!;
     }
 }

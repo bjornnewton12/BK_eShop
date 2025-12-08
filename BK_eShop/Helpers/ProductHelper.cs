@@ -16,13 +16,13 @@ namespace BK_eShop.Helpers
             using var db = new ShopContext();
 
             var allProducts = await db.Products.AsNoTracking()
-                .Include(x => x.Category)
+                .Include(x => x.Categories)
                 .OrderBy(product => product.ProductId).ToListAsync();
             Console.WriteLine("Product Id | Product name | Category | Product price | Product stock");
 
             foreach (var allProduct in allProducts)
             {
-                Console.WriteLine($"{allProduct.ProductId} | {allProduct.ProductName} | {allProduct.Category?.CategoryName} | {allProduct.ProductPrice} | {allProduct.ProductStock}");
+                Console.WriteLine($"{allProduct.ProductId} | {allProduct.ProductName} | {allProduct.Categories?.CategoryName} | {allProduct.ProductPrice} | {allProduct.ProductStock}");
             }
         }
 
@@ -39,13 +39,25 @@ namespace BK_eShop.Helpers
             }
 
             await CategoryHelper.ListCategoriesAsync();
+
             // Product category
-            Console.Write("Category: ");
-            var category = Console.ReadLine()?.Trim() ?? string.Empty;
-            if (string.IsNullOrEmpty(category))
+            Console.Write("Select category Id: ");
+            var categoryInput = Console.ReadLine()?.Trim() ?? string.Empty;
+            if (!int.TryParse(categoryInput, out var categoryId))
             {
-                Console.WriteLine("Category is required");
+                Console.WriteLine("Category Id must be a number");
+                return;
             }
+
+            using var db = new ShopContext();
+
+            var category = await db.Categories.FirstOrDefaultAsync(c => c.CategoryId == categoryId);
+            if (category == null)
+            {
+                Console.WriteLine("Category not found");
+                return;
+            }
+
 
             // Product price
             Console.Write("Select price: ");
@@ -65,9 +77,16 @@ namespace BK_eShop.Helpers
                 return;
             }
 
-            using var db = new ShopContext();
-            db.Products.Add(new Product { ProductName = productName, ProductPrice = productPrice, ProductStock = productStock });
+            var product = new Product
+            {
+                ProductName = productName,
+                ProductPrice = productPrice,
+                ProductStock = productStock,
+                Categories = category
+            };
 
+            db.Products.Add(product);
+            
             try
             {
                 await db.SaveChangesAsync();
@@ -76,6 +95,32 @@ namespace BK_eShop.Helpers
             catch (DbUpdateException ex)
             {
                 Console.WriteLine("Db Error: " + ex.GetBaseException().Message);
+            }
+        }
+
+        // Delete product
+        public static async Task DeleteProductAsync(int idDp)
+        {
+            using var db = new ShopContext();
+
+            var product = await db.Products.FirstOrDefaultAsync(x => x.ProductId == idDp);
+            if (product == null)
+            {
+                Console.WriteLine("Product not found");
+                return;
+            }
+
+            db.Products.Remove(product);
+
+            // Save changes
+            try
+            {
+                await db.SaveChangesAsync();
+                Console.WriteLine("Product deleted");
+            }
+            catch (DbUpdateException exception)
+            {
+                Console.WriteLine("DB error: " + exception.GetBaseException().Message);
             }
         }
     }

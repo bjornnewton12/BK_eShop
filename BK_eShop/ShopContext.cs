@@ -49,6 +49,12 @@ namespace BK_eShop
                 o.Property(x => x.OrderDate).IsRequired();
                 o.Property(x => x.OrderStatus).IsRequired();
                 o.Property(x => x.OrderTotalAmount).IsRequired();
+
+                // Relationship Customer -> Order
+                o.HasOne(x => x.Customer)
+                    .WithMany(x => x.Orders)
+                    .HasForeignKey(x => x.CustomerId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<OrderRow>(r =>
@@ -58,6 +64,18 @@ namespace BK_eShop
 
                 // Properties
                 r.Property(x => x.OrderRowQuantity).IsRequired();
+
+                // Relationship Order -> OrderRow
+                r.HasOne(x => x.Order)
+                    .WithMany(x => x.OrderRows)
+                    .HasForeignKey(x => x.OrderId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Relationship Product -> OrderRow
+                r.HasOne(x => x.Product)
+                    .WithMany()
+                    .HasForeignKey(x => x.ProductId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Product>(p =>
@@ -72,6 +90,12 @@ namespace BK_eShop
 
                 // Is unique
                 p.HasIndex(x => x.ProductName).IsUnique();
+
+                // Relationship Category -> Product
+                p.HasOne(x => x.Categories)
+                        .WithMany(x => x.Products)
+                        .HasForeignKey(x => x.CategoryId)
+                        .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Category>(t =>
@@ -83,7 +107,7 @@ namespace BK_eShop
                 t.Property(x => x.CategoryName).IsRequired();
 
                 // Is unique
-                t.HasIndex(x => x.CategoryName).IsUnique();
+                t.HasIndex(x => x.CategoryName).IsUnique();                
             });
 
             /*// Order Summary
