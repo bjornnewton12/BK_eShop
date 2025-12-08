@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BK_eShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20251205170649_FourthMigration")]
-    partial class FourthMigration
+    [Migration("20251208154328_TenthMigration")]
+    partial class TenthMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,11 +110,16 @@ namespace BK_eShop.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ProductId1")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("OrderRowId");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("OrderRows");
                 });
@@ -174,8 +179,9 @@ namespace BK_eShop.Migrations
             modelBuilder.Entity("BK_eShop.Models.Order", b =>
                 {
                     b.HasOne("BK_eShop.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Customer");
                 });
@@ -184,11 +190,17 @@ namespace BK_eShop.Migrations
                 {
                     b.HasOne("BK_eShop.Models.Order", "Order")
                         .WithMany("OrderRows")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BK_eShop.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BK_eShop.Models.Product", null)
                         .WithMany("OrderRows")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId1");
 
                     b.Navigation("Order");
 
@@ -197,11 +209,22 @@ namespace BK_eShop.Migrations
 
             modelBuilder.Entity("BK_eShop.Models.Product", b =>
                 {
-                    b.HasOne("BK_eShop.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("BK_eShop.Models.Category", "Categories")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("Category");
+                    b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("BK_eShop.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("BK_eShop.Models.Customer", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("BK_eShop.Models.Order", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BK_eShop.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class TenthMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace BK_eShop.Migrations
                     CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CustomerName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    CustomerPhone = table.Column<int>(type: "INTEGER", nullable: false),
+                    CustomerPhone = table.Column<string>(type: "TEXT", nullable: false),
                     CustomerEmail = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
@@ -71,7 +71,8 @@ namespace BK_eShop.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryId");
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +81,7 @@ namespace BK_eShop.Migrations
                 {
                     OrderId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    OrderDate = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     OrderStatus = table.Column<string>(type: "TEXT", nullable: false),
                     OrderTotalAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     CustomerId = table.Column<int>(type: "INTEGER", nullable: true)
@@ -92,7 +93,8 @@ namespace BK_eShop.Migrations
                         name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "CustomerId");
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,8 +104,10 @@ namespace BK_eShop.Migrations
                     OrderRowId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     OrderRowQuantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderRowUnitPrice = table.Column<decimal>(type: "TEXT", nullable: false),
                     OrderId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ProductId1 = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -112,10 +116,17 @@ namespace BK_eShop.Migrations
                         name: "FK_OrderRows_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderId");
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderRows_Products_ProductId",
                         column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderRows_Products_ProductId1",
+                        column: x => x.ProductId1,
                         principalTable: "Products",
                         principalColumn: "ProductId");
                 });
@@ -143,6 +154,11 @@ namespace BK_eShop.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderRows_ProductId1",
+                table: "OrderRows",
+                column: "ProductId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "CustomerId");
@@ -157,6 +173,67 @@ namespace BK_eShop.Migrations
                 table: "Products",
                 column: "ProductName",
                 unique: true);
+
+            // Order Summary
+            migrationBuilder.Sql(@"
+                CREATE VIEW IF NOT EXISTS OrderSummary AS
+                SELECT
+                    o.OrderId,
+                    o.OrderDate,
+                    c.CustomerName AS CustomerName,
+                    c.CustomerEmail AS CustomerEmail,
+                    IFNULL(SUM(orw.OrderRowQuantity * orw.OrderRowUnitPrice), 0) AS OrderTotalAmount
+                FROM Orders o
+                JOIN Customers c ON c.CustomerId = o.CustomerId
+                LEFT JOIN OrderRows orw ON orw.OrderId = o.OrderId
+                GROUP BY o.OrderId, o.OrderDate, c.CustomerName, c.CustomerEmail;
+                ");
+
+            // AFTER INSERT
+            migrationBuilder.Sql(@"
+                CREATE TRIGGER IF NOT EXISTS trg_OrderRow_Insert
+                AFTER INSERT ON OrderRows
+                BEGIN
+                    UPDATE Orders
+                    SET OrderTotalAmount = (
+                                       SELECT IFNULL(SUM(OrderRowQuantity * OrderRowUnitPrice), 0) 
+                                       FROM OrderRows 
+                                       WHERE OrderId = NEW.OrderId
+                                      )
+                    WHERE OrderId = NEW.OrderId;
+                END;                
+                ");
+
+            // AFTER UPDATE
+            migrationBuilder.Sql(@"
+                CREATE TRIGGER IF NOT EXISTS trg_OrderRow_Update
+                AFTER UPDATE ON OrderRows
+                BEGIN
+                    UPDATE Orders
+                    SET OrderTotalAmount = ( 
+                                        SELECT IFNULL (SUM(OrderRowQuantity * OrderRowUnitPrice), 0)
+                                        FROM OrderRows 
+                                        WHERE OrderId = NEW.OrderId
+                                      )
+                    WHERE OrderId = NEW.OrderId;                                  
+                END;
+                ");
+
+            // AFTER DELETE (Stämmer det att det måste vara OLD?)
+            migrationBuilder.Sql(@"
+                CREATE TRIGGER IF NOT EXISTS trg_OrderRow_Delete
+                AFTER DELETE ON OrderRows
+                BEGIN
+                    UPDATE Orders
+                    SET OrderTotalAmount = ( 
+                                        SELECT IFNULL (SUM(OrderRowQuantity * OrderRowUnitPrice), 0)
+                                        FROM OrderRows 
+                                        WHERE OrderId = OLD.OrderId
+                                      )
+                    WHERE OrderId = OLD.OrderId;
+                END;
+                ");
+
         }
 
         /// <inheritdoc />
@@ -179,6 +256,23 @@ namespace BK_eShop.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.Sql(@"
+                 DROP VIEW IF EXISTS OrderSummary
+                 ");
+
+            migrationBuilder.Sql(@"
+                 DROP TRIGGER IF EXISTS trg_OrderRow_Insert
+                 ");
+
+            migrationBuilder.Sql(@"
+                 DROP TRIGGER IF EXISTS trg_OrderRow_Update
+                 ");
+
+            migrationBuilder.Sql(@"
+                 DROP TRIGGER IF EXISTS trg_OrderRow_Delete
+                 ");
         }
     }
 }
+
