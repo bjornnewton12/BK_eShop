@@ -19,6 +19,8 @@ namespace BK_eShop.Models
 
         [Required, MaxLength(150)]
         public string CustomerEmail { get; set; } = null!;
+        [Required]
+        public string CustomerPassword { get; set; } = null!;
         public List<Order> Orders { get; set; } = new();
     }
 }

@@ -26,6 +26,35 @@ namespace BK_eShop.Helpers
             }
         }
 
+        // List products by category
+        public static async Task ListProductsbyCategoryAsync()
+        {
+            using var db = new ShopContext();
+            Console.WriteLine("Please select a category to list its products");
+            var categories = await db.Categories.AsNoTracking().ToListAsync();
+
+            foreach (var category in categories)
+            {
+                Console.WriteLine($"{category.CategoryId}: {category.CategoryName}");
+            }
+
+            if (!int.TryParse(Console.ReadLine(), out var idC))
+            {
+                Console.WriteLine("Category Id must be a number");
+            }
+
+            var categoryName = await db.Categories.FirstAsync(c => c.CategoryId == idC);
+            var products = await db.Products.Where(c => c.CategoryId == idC).ToListAsync();
+
+            Console.WriteLine($"Products in the {categoryName.CategoryName} category");
+            Console.WriteLine("Product Id | Product name | Product price | Product stock");
+
+            foreach(var product in products)
+            {
+                Console.WriteLine($" {product.ProductId} | {product.ProductName} | {product.ProductPrice} | {product.ProductStock} ");
+            }
+        }
+
         // Add product
         public static async Task AddProductAsync()
         {

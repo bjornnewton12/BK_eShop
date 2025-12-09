@@ -27,26 +27,26 @@ namespace BK_eShop.Helpers
             for (int i = 0; i < bytes.Length; i++)
             {
                 bytes[i] = (byte)(bytes[i] ^ Key);
+
             }
 
             // Save result as text
             return Convert.ToBase64String(bytes);
         }
 
-        public static string Decrypt(string encyptedText)
+        public static string Decrypt(string encryptedText)
         {
-            if (string.IsNullOrEmpty(encyptedText))
+            if (string.IsNullOrEmpty(encryptedText))
             {
-                return encyptedText;
+                return encryptedText;
             }
         
-
         // Redo text to bytes
-        var bytes = Convert.FromBase64String(encyptedText);
+        var bytes = Convert.FromBase64String(encryptedText);
 
-        for (int i = 0; i<bytes.Length; i++)
+        for (int i = 0; i < bytes.Length; i++)
         {
-            bytes[i] = (byte) (bytes[i] ^ Key);
+            bytes[i] = (byte)(bytes[i] ^ Key);
         }
 
         return System.Text.Encoding.UTF8.GetString(bytes);

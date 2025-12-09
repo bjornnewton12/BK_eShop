@@ -18,7 +18,7 @@ namespace BK_eShop.Helpers
             using var db = new ShopContext();
 
             var customers = await db.Customers.AsNoTracking().OrderBy(customer => customer.CustomerId).ToListAsync();
-            Console.WriteLine("Customer Id | Name | Phone | Email");
+            Console.WriteLine("Customer Id | Name | Phone | Email (Encrypted)");
 
             foreach (var customer in customers)
             {
@@ -49,8 +49,22 @@ namespace BK_eShop.Helpers
                 return;
             }
 
+            Console.Write("Password: ");
+            var customerPassword = Console.ReadLine()?.Trim() ?? string.Empty;
+            if (string.IsNullOrEmpty(customerPassword))
+            {
+                Console.WriteLine("Password is required");
+                return;
+            }
+
             using var db = new ShopContext();
-            db.Customers.Add(new Customer { CustomerName = customerName, CustomerEmail = customerEmail, CustomerPhone = customerPhone});
+            db.Customers.Add(new Customer 
+            { 
+                CustomerName = customerName,
+                CustomerPhone = customerPhone,
+                CustomerEmail = EncryptionHelper.Encrypt(customerEmail),
+                CustomerPassword = EncryptionHelper.Encrypt(customerPassword)
+            });
 
             // Save changes
             try
@@ -96,7 +110,7 @@ namespace BK_eShop.Helpers
             }
 
             // Change customer email
-            Console.WriteLine($"Previous email: {customer.CustomerEmail}");
+            Console.WriteLine($"Previous email: {EncryptionHelper.Decrypt(customer.CustomerEmail)}");
             Console.Write("New email: ");
             var customerEmail = Console.ReadLine()?.Trim() ?? string.Empty;
             if (!string.IsNullOrEmpty(customerEmail))
