@@ -145,7 +145,7 @@ while (true)
 
         // Product commands
         case "3":
-            Console.WriteLine("\nProduct commands: 1. List products | 2. Add Product | 3. Delete product | 4. Exit to main menu");
+            Console.WriteLine("\nProduct commands: 1. List products | 2. Add Product | 3. Delete product | 4. List product by category | 5. Exit to main menu");
             Console.Write("> ");
 
             var productInput = Console.ReadLine();
@@ -157,7 +157,7 @@ while (true)
             }
 
             // Exit to main menu
-            if (productInput.Equals("4"))
+            if (productInput.Equals("5"))
             {
                 break;
             }
@@ -176,17 +176,21 @@ while (true)
                 await ProductHelper.AddProductAsync();
                 break;
             case "3":
-                    //Delete product
-                    await ProductHelper.ListProductsAsync();
-                    Console.Write("\nEnter product Id to delete: ");
-                    var deleteProductInput = Console.ReadLine();
+                //Delete product
+                await ProductHelper.ListProductsAsync();
+                Console.Write("\nEnter product Id to delete: ");
+                var deleteProductInput = Console.ReadLine();
 
-                    if (!int.TryParse(deleteProductInput, out var idDp))
-                    {
-                        Console.WriteLine("There is no product with that Id");
-                        break;
-                    }
-                    await ProductHelper.DeleteProductAsync(idDp);
+                if (!int.TryParse(deleteProductInput, out var idDp))
+                {
+                   Console.WriteLine("There is no product with that Id");
+                   break;
+                }
+                  await ProductHelper.DeleteProductAsync(idDp);
+                break;
+            case "4":
+                // List products by category  
+                await ProductHelper.ListProductsbyCategoryAsync();
                 break;
             }
             break;

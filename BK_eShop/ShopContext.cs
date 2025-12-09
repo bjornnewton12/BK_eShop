@@ -35,6 +35,7 @@ namespace BK_eShop
                 c.Property(x => x.CustomerName).IsRequired().HasMaxLength(150);
                 c.Property(x => x.CustomerPhone).IsRequired();
                 c.Property(x => x.CustomerEmail).IsRequired().HasMaxLength(150);
+                c.Property(x => x.CustomerPassword).IsRequired();
 
                 // Is unique
                 c.HasIndex(x => x.CustomerEmail).IsUnique();
