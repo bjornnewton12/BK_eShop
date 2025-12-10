@@ -66,11 +66,11 @@ namespace BK_eShop.Helpers
                 Console.WriteLine("Name is required and cannot be more than 150 characters");
                 return;
             }
-
+            Console.WriteLine("");
             await CategoryHelper.ListCategoriesAsync();
 
             // Product category
-            Console.Write("Select category Id: ");
+            Console.Write("\nSelect category Id: ");
             var categoryInput = Console.ReadLine()?.Trim() ?? string.Empty;
             if (!int.TryParse(categoryInput, out var categoryId))
             {
@@ -119,7 +119,7 @@ namespace BK_eShop.Helpers
             try
             {
                 await db.SaveChangesAsync();
-                Console.WriteLine("Product added");
+                Console.WriteLine("\nProduct added");
             }
             catch (DbUpdateException ex)
             {
@@ -145,7 +145,7 @@ namespace BK_eShop.Helpers
             try
             {
                 await db.SaveChangesAsync();
-                Console.WriteLine("Product deleted");
+                Console.WriteLine("\nProduct deleted");
             }
             catch (DbUpdateException exception)
             {
