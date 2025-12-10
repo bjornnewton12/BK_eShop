@@ -76,6 +76,7 @@ When running the application, the console will guide you with available commands
 * Order status is never updated
   * A future update could be to have a choice of Update Order where status can be changed to shipped and then Recieved, when Received is chosen the order then dissapears after a few days.
 * Products are not shown under Orders
+* New products needs to belong to an existing Category, a future update would have an option to add category if needed under Add Product.
 * Product quantity never changes after an order has been placed
 ## Credits
 * Developed by: bjornnewton12
