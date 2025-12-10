@@ -41,7 +41,7 @@ When running the application, the console will guide you with available commands
 * Edit customer
   * Update Customer name, Customer phone, or Customer email for an existing customer
 * Delete customer
-  * Removes a customer, unless they have an order/-s
+  * Deletes a customer, unless they have an order/-s
 ### Orders
 * List orders
   * Shows order ID, date, status, customer name, and auto-calculated total amount
@@ -50,6 +50,7 @@ When running the application, the console will guide you with available commands
   * Add one or more products
   * Select quantities (validated against stock)
   * Order total is calculated automatically via database triggers
+* Delete order
 ### Products
 * List products
   * Displays Product name, Category, Product price, and Product stock
@@ -57,7 +58,7 @@ When running the application, the console will guide you with available commands
   * Specify Product name (UNIQUE), Product price, Product stock
   * Assign a category
 * Delete product
-  * Removes a product unless it is referenced in an order
+  * Deletes a product unless it is referenced in an order
 * List product by category
   * Select a category Id and display all products in that category
 ### Categories
