@@ -9,7 +9,6 @@ using System.Runtime.Intrinsics.Arm;
 Console.WriteLine("DB: " + Path.Combine(AppContext.BaseDirectory, "shop.db"));
 await Seeding.SeedAsync();
 
-// CLI
 while (true)
 {
     Console.WriteLine($"\nCommands: 1. Customers | 2. Orders | 3. Products | 4. Categories");

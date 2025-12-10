@@ -110,13 +110,6 @@ namespace BK_eShop
                 // Is unique
                 t.HasIndex(x => x.CategoryName).IsUnique();                
             });
-
-            /*// Order Summary
-            modelBuilder.Entity<OrderSummary>(e =>
-            {
-                e.HasNoKey(); // Saknar PK
-                e.ToView("OrderSummaryView"); // Kopplar tabellen mot SQL
-            });*/
         }
     }
 }
