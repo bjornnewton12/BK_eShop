@@ -17,7 +17,7 @@ namespace BK_eShop.Helpers
             var allOrders = await db.Orders.AsNoTracking()
                 .Include(x => x.Customer)
                 .OrderBy(order => order.OrderId).ToListAsync();
-            Console.WriteLine("Order Id | Order date | Status | Customer name | Total amount");
+            Console.WriteLine("\nOrder Id | Order date | Status | Customer name | Total amount");
 
             foreach (var allOrder in allOrders)
             {
@@ -49,7 +49,7 @@ namespace BK_eShop.Helpers
             {
                 await ProductHelper.ListProductsAsync();
 
-                Console.WriteLine("Select a product Id: ");
+                Console.WriteLine("\nSelect a product Id: ");
                 var prodId = Console.ReadLine();
                 if (!int.TryParse(prodId, out var idP))
                 {
@@ -64,7 +64,7 @@ namespace BK_eShop.Helpers
                     continue;
                 }
 
-                Console.Write("Select quantity: ");
+                Console.Write("\nSelect quantity: ");
                 var oQuantity = Console.ReadLine();
                 if (!int.TryParse(oQuantity, out var orderQuantity))
                 {
@@ -80,7 +80,7 @@ namespace BK_eShop.Helpers
 
                 if (product.ProductStock < orderQuantity)
                 {
-                    Console.WriteLine("Order quantity cannot exceed product quantity!");
+                    Console.WriteLine("Order quantity cannot exceed product quantity");
                     continue;
                 }
 
@@ -94,9 +94,8 @@ namespace BK_eShop.Helpers
 
                 orderRows.Add(oRow);
 
-                Console.WriteLine("Would you like to add another product to your order? (1. Yes | 2. No)");
+                Console.WriteLine("\nWould you like to add another product to your order? (1. Yes | 2. No)");
                 choice = Console.ReadLine() ?? "2";
-
             }
                 order.OrderRows = orderRows;
                 db.Orders.Add(order);
@@ -138,5 +137,43 @@ namespace BK_eShop.Helpers
                 Console.WriteLine("DB error: " + exception.GetBaseException().Message);
             }
         }
+
+        // List orders by customer
+        /*public static async Task ListOrdersbyCustomerAsync()
+        {
+            using var db = new ShopContext();
+            Console.WriteLine(Please select a customer Id )
+        }*/
     }
 }
+
+
+
+/*// List products by category
+        public static async Task ListProductsbyCategoryAsync()
+        {
+            using var db = new ShopContext();
+            Console.WriteLine("Please select a category to list its products");
+            var categories = await db.Categories.AsNoTracking().ToListAsync();
+
+            foreach (var category in categories)
+            {
+                Console.WriteLine($"{category.CategoryId}: {category.CategoryName}");
+            }
+
+            if (!int.TryParse(Console.ReadLine(), out var idC))
+            {
+                Console.WriteLine("Category Id must be a number");
+            }
+
+            var categoryName = await db.Categories.FirstAsync(c => c.CategoryId == idC);
+            var products = await db.Products.Where(c => c.CategoryId == idC).ToListAsync();
+
+            Console.WriteLine($"Products in the {categoryName.CategoryName} category");
+            Console.WriteLine("Product Id | Product name | Product price | Product stock");
+
+            foreach(var product in products)
+            {
+                Console.WriteLine($" {product.ProductId} | {product.ProductName} | {product.ProductPrice} | {product.ProductStock} ");
+            }
+        }*/

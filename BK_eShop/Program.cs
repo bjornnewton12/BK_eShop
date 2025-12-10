@@ -118,7 +118,7 @@ while (true)
                     
                 case "2":
                     // Add order
-                    Console.Write("Select customer Id to add order: ");
+                    Console.Write("\nSelect customer Id to add order: ");
                     var customerId = Console.ReadLine();
                     if(!int.TryParse(customerId, out var IdO))
                     {
@@ -130,7 +130,7 @@ while (true)
                 case "3":
                     // Delete order
                     await OrderHelper.ListOrdersAsync();
-                    Console.Write("Select order Id to delete: ");
+                    Console.Write("\nSelect order Id to delete: ");
                     var deleteOrderInput = Console.ReadLine();
 
                     if (!int.TryParse(deleteOrderInput, out var idO))

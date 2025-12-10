@@ -5,7 +5,6 @@ namespace BK_eShop.Helpers
 {
     public static class CategoryHelper
     {
-
         // List category
         public static async Task ListCategoriesAsync()
         {
@@ -18,7 +17,6 @@ namespace BK_eShop.Helpers
             {
                 Console.WriteLine($"{category.CategoryId} | {category.CategoryName}"); 
             }
-
         }
 
 

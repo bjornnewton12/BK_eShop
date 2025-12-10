@@ -18,7 +18,7 @@ namespace BK_eShop.Helpers
             using var db = new ShopContext();
 
             var customers = await db.Customers.AsNoTracking().OrderBy(customer => customer.CustomerId).ToListAsync();
-            Console.WriteLine("Customer Id | Name | Phone | Email (Encrypted)");
+            Console.WriteLine("\nCustomer Id | Name | Phone | Email (Encrypted)");
 
             foreach (var customer in customers)
             {
@@ -29,7 +29,7 @@ namespace BK_eShop.Helpers
         // Add customer
         public static async Task AddCustomerAsync()
         {
-            Console.Write("Name: ");
+            Console.Write("\nName: ");
             var customerName = Console.ReadLine()?.Trim() ?? string.Empty;
             if (string.IsNullOrEmpty(customerName) || customerName.Length > 150)
             {
@@ -61,7 +61,7 @@ namespace BK_eShop.Helpers
             db.Customers.Add(new Customer 
             { 
                 CustomerName = customerName,
-                CustomerPhone = customerPhone,
+                CustomerPhone = EncryptionHelper.Encrypt(customerPhone),
                 CustomerEmail = EncryptionHelper.Encrypt(customerEmail),
                 CustomerPassword = EncryptionHelper.Encrypt(customerPassword)
             });
@@ -70,7 +70,7 @@ namespace BK_eShop.Helpers
             try
             {
                 await db.SaveChangesAsync();
-                Console.WriteLine("Customer added");
+                Console.WriteLine("\nCustomer added");
             }
             catch (DbUpdateException exception)
             {
@@ -87,7 +87,7 @@ namespace BK_eShop.Helpers
 
             if (customer == null)
             {
-                Console.WriteLine("Customer not found");
+                Console.WriteLine("\nCustomer not found");
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace BK_eShop.Helpers
             try
             {
                 await db.SaveChangesAsync();
-                Console.WriteLine("Edited customer");
+                Console.WriteLine("\nEdited customer");
             }
             catch (DbUpdateException exception)
             {
@@ -138,14 +138,14 @@ namespace BK_eShop.Helpers
             var customer = await db.Customers.FirstOrDefaultAsync(x => x.CustomerId == idD);
             if (customer == null)
             {
-                Console.WriteLine("Customer not found");
+                Console.WriteLine("\nCustomer not found");
                 return;
             }
 
             var customerWithOrders = await db.Orders.AnyAsync(o => o.CustomerId == idD);
             if (customerWithOrders)
             {
-                Console.WriteLine("Customer has an order so you can't delete them");
+                Console.WriteLine("\nCustomer has an order so you can't delete them");
                 return;
             }
 
@@ -155,7 +155,7 @@ namespace BK_eShop.Helpers
             try
             {
                 await db.SaveChangesAsync();
-                Console.WriteLine("Customer deleted");
+                Console.WriteLine("\nCustomer deleted");
             }
             catch (DbUpdateException exception)
             {
@@ -164,3 +164,4 @@ namespace BK_eShop.Helpers
         }
     }
 }
+
