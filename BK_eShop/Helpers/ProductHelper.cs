@@ -18,7 +18,7 @@ namespace BK_eShop.Helpers
             var allProducts = await db.Products.AsNoTracking()
                 .Include(x => x.Categories)
                 .OrderBy(product => product.ProductId).ToListAsync();
-            Console.WriteLine("Product Id | Product name | Category | Product price | Product stock");
+            Console.WriteLine("\nProduct Id | Product name | Category | Product price | Product stock");
 
             foreach (var allProduct in allProducts)
             {
@@ -30,7 +30,7 @@ namespace BK_eShop.Helpers
         public static async Task ListProductsbyCategoryAsync()
         {
             using var db = new ShopContext();
-            Console.WriteLine("Please select a category to list its products");
+            Console.WriteLine("\nPlease select a category to list its products");
             var categories = await db.Categories.AsNoTracking().ToListAsync();
 
             foreach (var category in categories)
@@ -46,7 +46,7 @@ namespace BK_eShop.Helpers
             var categoryName = await db.Categories.FirstAsync(c => c.CategoryId == idC);
             var products = await db.Products.Where(c => c.CategoryId == idC).ToListAsync();
 
-            Console.WriteLine($"Products in the {categoryName.CategoryName} category");
+            Console.WriteLine($"\nProducts in the {categoryName.CategoryName} category");
             Console.WriteLine("Product Id | Product name | Product price | Product stock");
 
             foreach(var product in products)
@@ -59,7 +59,7 @@ namespace BK_eShop.Helpers
         public static async Task AddProductAsync()
         {
             // Product name
-            Console.Write("Product name: ");
+            Console.Write("\nProduct name: ");
             var productName = Console.ReadLine()?.Trim() ?? string.Empty;
             if (string.IsNullOrEmpty(productName) || productName.Length > 150)
             {
