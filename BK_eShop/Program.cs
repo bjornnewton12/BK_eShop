@@ -117,6 +117,7 @@ while (true)
                     
                 case "2":
                     // Add order
+                    await CustomerHelper.ListCustomerNamesAsync();
                     Console.Write("\nSelect customer Id to add order: ");
                     var customerId = Console.ReadLine();
                     if(!int.TryParse(customerId, out var IdO))

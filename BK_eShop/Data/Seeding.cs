@@ -45,7 +45,7 @@ namespace BK_eShop.Data
                 db.Products.AddRange(
                     new Product { ProductName = "Monét painting", ProductPrice = 45000M, ProductStock = 5, CategoryId = 1 },
                     new Product { ProductName = "Plaid yellow blazer", ProductPrice = 900M, ProductStock = 100 , CategoryId = 2},
-                    new Product { ProductName = "Red yellow blazer", ProductPrice = 800M, ProductStock = 100, CategoryId = 2 }
+                    new Product { ProductName = "Plaid red blazer", ProductPrice = 800M, ProductStock = 100, CategoryId = 2 }
                 );
                 await db.SaveChangesAsync();
                 Console.WriteLine("Seeded products db");

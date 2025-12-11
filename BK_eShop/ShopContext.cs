@@ -110,6 +110,14 @@ namespace BK_eShop
                 // Is unique
                 t.HasIndex(x => x.CategoryName).IsUnique();                
             });
+
+            // Index used for Order list
+            // modelBuilder.Entity<Order>().HasIndex(o => o.OrderDate);
+            // modelBuilder.Entity<Order>().HasIndex(o => o.CustomerId);
+
+            // Index used for Product list
+            // modelBuilder.Entity<Product>().HasIndex(p => p.ProductId);
+            // modelBuilder.Entity<Product>().HasIndex(p => p.CategoryId);
         }
     }
 }

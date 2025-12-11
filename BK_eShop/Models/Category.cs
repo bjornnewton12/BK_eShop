@@ -11,10 +11,9 @@ namespace BK_eShop.Models
     {
         // PK
         public int CategoryId { get; set; }
+
         [Required]
         public string CategoryName { get; set; } = null!;
-
-        // FK
         public List<Product> Products { get; set; } = new();
     }
 }

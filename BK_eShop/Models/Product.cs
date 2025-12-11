@@ -11,17 +11,14 @@ namespace BK_eShop.Models
     {
         // PK
         public int ProductId { get; set; }
+
         [Required, MaxLength(150)]
         public string ProductName { get; set; } = null!;
         [Required]
         public decimal ProductPrice { get; set; }
         [Required]
         public int ProductStock { get; set; }
-
-        // FK
         public int? CategoryId { get; set; }
-
-
         public Category? Categories { get; set; }
         public List<OrderRow> OrderRows { get; set; } = null!;
     }

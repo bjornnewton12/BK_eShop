@@ -18,11 +18,25 @@ namespace BK_eShop.Helpers
             using var db = new ShopContext();
 
             var customers = await db.Customers.AsNoTracking().OrderBy(customer => customer.CustomerId).ToListAsync();
-            Console.WriteLine("\nCustomer Id | Name | Phone | Email (Encrypted)");
+            Console.WriteLine("\nCustomer Id | Name | Phone (Encrypted) | Email (Encrypted)");
 
             foreach (var customer in customers)
             {
                 Console.WriteLine($"{customer.CustomerId} | {customer.CustomerName} | {customer.CustomerPhone} | {customer.CustomerEmail}");
+            }
+        }
+
+        // List customer names
+        public static async Task ListCustomerNamesAsync()
+        {
+            using var db = new ShopContext();
+
+            var customers = await db.Customers.AsNoTracking().OrderBy(customer => customer.CustomerId).ToListAsync();
+            Console.WriteLine("\nCustomer Id | Name");
+
+            foreach (var customer in customers)
+            {
+                Console.WriteLine($"{customer.CustomerId} | {customer.CustomerName}");
             }
         }
 
@@ -100,7 +114,7 @@ namespace BK_eShop.Helpers
                 customer.CustomerName = customerName;
             }
 
-            // TODO Change customer phone 
+            // Change customer phone 
             Console.WriteLine($"Previous phone number: {customer.CustomerPhone}");
             Console.Write("New phone number: ");
             var customerPhone = Console.ReadLine()?.Trim() ?? string.Empty;
@@ -164,4 +178,3 @@ namespace BK_eShop.Helpers
         }
     }
 }
-

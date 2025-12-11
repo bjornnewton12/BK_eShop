@@ -11,19 +11,15 @@ namespace BK_eShop.Models
     {
         // PK
         public int OrderId { get; set; }
+
         [Required]
         public DateTime OrderDate { get; set; }
         [Required]
         public string OrderStatus { get; set; } = null!;
         [Required]
         public decimal OrderTotalAmount { get; set; }
-
-        //FK
         public int? CustomerId { get; set; }
         public Customer? Customer { get; set; }
-
-        // Navigation
         public List<OrderRow> OrderRows { get; set; } = new();
-
     }
 }

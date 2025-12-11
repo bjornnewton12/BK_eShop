@@ -14,9 +14,15 @@ namespace BK_eShop.Helpers
         {
             using var db = new ShopContext();
 
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+
             var allOrders = await db.Orders.AsNoTracking()
                 .Include(x => x.Customer)
                 .OrderBy(order => order.OrderId).ToListAsync();
+
+            sw.Stop();
+            Console.WriteLine($"Total query time: {sw.ElapsedMilliseconds} ms");
+
             Console.WriteLine("\nOrder Id | Order date | Status | Customer name | Total amount");
 
             foreach (var allOrder in allOrders)
@@ -92,24 +98,24 @@ namespace BK_eShop.Helpers
                     Order = order
                 };
 
-                orderRows.Add(oRow);
+            orderRows.Add(oRow);
 
-                Console.WriteLine("\nWould you like to add another product to your order? (1. Yes | 2. No)");
-                choice = Console.ReadLine() ?? "2";
+            Console.WriteLine("\nWould you like to add another product to your order? (1. Yes | 2. No)");
+            choice = Console.ReadLine() ?? "2";
             }
-                order.OrderRows = orderRows;
-                db.Orders.Add(order);
+            order.OrderRows = orderRows;
+            db.Orders.Add(order);
 
             try
             {
                 await db.SaveChangesAsync();
                 Console.WriteLine($"Order complete - Order ID: {order.OrderId}");
             }
+
             catch (DbUpdateException ex)
             {
                 Console.WriteLine("Db Error: " + ex.GetBaseException().Message);
             }
-            
         }
 
         // Delete order
@@ -137,43 +143,5 @@ namespace BK_eShop.Helpers
                 Console.WriteLine("DB error: " + exception.GetBaseException().Message);
             }
         }
-
-        // List orders by customer
-        /*public static async Task ListOrdersbyCustomerAsync()
-        {
-            using var db = new ShopContext();
-            Console.WriteLine(Please select a customer Id )
-        }*/
     }
 }
-
-
-
-/*// List products by category
-        public static async Task ListProductsbyCategoryAsync()
-        {
-            using var db = new ShopContext();
-            Console.WriteLine("Please select a category to list its products");
-            var categories = await db.Categories.AsNoTracking().ToListAsync();
-
-            foreach (var category in categories)
-            {
-                Console.WriteLine($"{category.CategoryId}: {category.CategoryName}");
-            }
-
-            if (!int.TryParse(Console.ReadLine(), out var idC))
-            {
-                Console.WriteLine("Category Id must be a number");
-            }
-
-            var categoryName = await db.Categories.FirstAsync(c => c.CategoryId == idC);
-            var products = await db.Products.Where(c => c.CategoryId == idC).ToListAsync();
-
-            Console.WriteLine($"Products in the {categoryName.CategoryName} category");
-            Console.WriteLine("Product Id | Product name | Product price | Product stock");
-
-            foreach(var product in products)
-            {
-                Console.WriteLine($" {product.ProductId} | {product.ProductName} | {product.ProductPrice} | {product.ProductStock} ");
-            }
-        }*/

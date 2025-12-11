@@ -41,7 +41,7 @@ When running the application, the console will guide you with available commands
 * Edit customer
   * Update Customer name, Customer phone, or Customer email for an existing customer
 * Delete customer
-  * Removes a customer, unless they have an order/-s
+  * Deletes a customer, unless they have an order/-s
 ### Orders
 * List orders
   * Shows order ID, date, status, customer name, and auto-calculated total amount
@@ -50,6 +50,7 @@ When running the application, the console will guide you with available commands
   * Add one or more products
   * Select quantities (validated against stock)
   * Order total is calculated automatically via database triggers
+* Delete order
 ### Products
 * List products
   * Displays Product name, Category, Product price, and Product stock
@@ -57,7 +58,7 @@ When running the application, the console will guide you with available commands
   * Specify Product name (UNIQUE), Product price, Product stock
   * Assign a category
 * Delete product
-  * Removes a product unless it is referenced in an order
+  * Deletes a product unless it is referenced in an order
 * List product by category
   * Select a category Id and display all products in that category
 ### Categories
@@ -75,6 +76,7 @@ When running the application, the console will guide you with available commands
 * Order status is never updated
   * A future update could be to have a choice of Update Order where status can be changed to shipped and then Recieved, when Received is chosen the order then dissapears after a few days.
 * Products are not shown under Orders
+* New products needs to belong to an existing Category, a future update would have an option to add category if needed under Add Product.
 * Product quantity never changes after an order has been placed
 ## Credits
 * Developed by: bjornnewton12

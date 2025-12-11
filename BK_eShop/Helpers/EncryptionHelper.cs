@@ -11,7 +11,7 @@ namespace BK_eShop.Helpers
 {
     public class EncryptionHelper
     {
-        private const byte Key = 0x42; // 66 bytes
+        private const byte Key = 0x42;
 
         // Encrypt
         public static string Encrypt(string text)

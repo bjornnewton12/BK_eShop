@@ -19,7 +19,6 @@ namespace BK_eShop.Helpers
             }
         }
 
-
         // Add category
         public static async Task AddCategoryAsync()
         {

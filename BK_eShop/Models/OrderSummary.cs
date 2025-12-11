@@ -7,12 +7,6 @@ using System.Threading.Tasks;
 
 namespace BK_eShop.Models
 {
-    /*
-     * Detta är en keyless entitet (ingen PK)
-     * Den representerar en SQL view, en spara Select-query
-     * Vi använder dessa Views i EF Core som gör att den kan läsa den precis som en vanlig tabell
-    */
-
     [Keyless]
     public class OrderSummary
     {
