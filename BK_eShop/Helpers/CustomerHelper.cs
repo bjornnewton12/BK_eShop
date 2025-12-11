@@ -18,11 +18,11 @@ namespace BK_eShop.Helpers
             using var db = new ShopContext();
 
             var customers = await db.Customers.AsNoTracking().OrderBy(customer => customer.CustomerId).ToListAsync();
-            Console.WriteLine("\nCustomer Id | Name | Phone (Encrypted) | Email (Encrypted)");
+            Console.WriteLine("\nCustomer Id | Name | Phone | Email");
 
             foreach (var customer in customers)
             {
-                Console.WriteLine($"{customer.CustomerId} | {customer.CustomerName} | {customer.CustomerPhone} | {customer.CustomerEmail}");
+                Console.WriteLine($"{customer.CustomerId} | {customer.CustomerName} | {EncryptionHelper.Decrypt(customer.CustomerPhone)} | {EncryptionHelper.Decrypt(customer.CustomerEmail)}");
             }
         }
 
@@ -63,21 +63,12 @@ namespace BK_eShop.Helpers
                 return;
             }
 
-            Console.Write("Password: ");
-            var customerPassword = Console.ReadLine()?.Trim() ?? string.Empty;
-            if (string.IsNullOrEmpty(customerPassword))
-            {
-                Console.WriteLine("Password is required");
-                return;
-            }
-
             using var db = new ShopContext();
             db.Customers.Add(new Customer 
             { 
                 CustomerName = customerName,
                 CustomerPhone = EncryptionHelper.Encrypt(customerPhone),
-                CustomerEmail = EncryptionHelper.Encrypt(customerEmail),
-                CustomerPassword = EncryptionHelper.Encrypt(customerPassword)
+                CustomerEmail = EncryptionHelper.Encrypt(customerEmail)
             });
 
             // Save changes
@@ -115,7 +106,7 @@ namespace BK_eShop.Helpers
             }
 
             // Change customer phone 
-            Console.WriteLine($"Previous phone number: {customer.CustomerPhone}");
+            Console.WriteLine($"Previous phone number: {EncryptionHelper.Decrypt(customer.CustomerPhone)}");
             Console.Write("New phone number: ");
             var customerPhone = Console.ReadLine()?.Trim() ?? string.Empty;
             if (!string.IsNullOrEmpty(customerPhone))

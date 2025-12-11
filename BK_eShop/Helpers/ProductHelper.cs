@@ -15,14 +15,9 @@ namespace BK_eShop.Helpers
         {
             using var db = new ShopContext();
 
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-
             var allProducts = await db.Products.AsNoTracking()
                 .Include(x => x.Categories)
                 .OrderBy(product => product.ProductId).ToListAsync();
-
-            sw.Stop();
-            Console.WriteLine($"Total query time: {sw.ElapsedMilliseconds} ms");
 
             Console.WriteLine("\nProduct Id | Product name | Category | Product price | Product stock");
 

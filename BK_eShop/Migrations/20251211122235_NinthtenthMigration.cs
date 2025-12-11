@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BK_eShop.Migrations
 {
     /// <inheritdoc />
-    public partial class TenthMigration : Migration
+    public partial class NinthtenthMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -233,7 +233,6 @@ namespace BK_eShop.Migrations
                     WHERE OrderId = OLD.OrderId;
                 END;
                 ");
-
         }
 
         /// <inheritdoc />
@@ -275,4 +274,3 @@ namespace BK_eShop.Migrations
         }
     }
 }
-

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BK_eShop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20251211083504_SixteenthMigration")]
-    partial class SixteenthMigration
+    [Migration("20251211122235_NinthtenthMigration")]
+    partial class NinthtenthMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,10 +54,6 @@ namespace BK_eShop.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CustomerPassword")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CustomerPhone")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -92,8 +88,6 @@ namespace BK_eShop.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("OrderDate");
 
                     b.ToTable("Orders");
                 });
@@ -175,8 +169,6 @@ namespace BK_eShop.Migrations
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProductName")
                         .IsUnique();

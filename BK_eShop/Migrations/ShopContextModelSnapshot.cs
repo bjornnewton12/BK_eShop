@@ -51,10 +51,6 @@ namespace BK_eShop.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CustomerPassword")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CustomerPhone")
                         .IsRequired()
                         .HasColumnType("TEXT");

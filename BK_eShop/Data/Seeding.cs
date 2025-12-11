@@ -20,8 +20,8 @@ namespace BK_eShop.Data
             if (!await db.Customers.AnyAsync())
             {
                 db.Customers.AddRange(
-                    new Customer { CustomerName = "Horowitz, Cher", CustomerPhone = EncryptionHelper.Encrypt("0739124318"), CustomerEmail = EncryptionHelper.Encrypt("cher@me.com"), CustomerPassword = EncryptionHelper.Encrypt("AsIf") },
-                    new Customer { CustomerName = "Davenport, Dionne", CustomerPhone = EncryptionHelper.Encrypt("0742670934"), CustomerEmail = EncryptionHelper.Encrypt("dd@me.com"), CustomerPassword = EncryptionHelper.Encrypt("woman") }
+                    new Customer { CustomerName = "Horowitz, Cher", CustomerPhone = EncryptionHelper.Encrypt("0739124318"), CustomerEmail = EncryptionHelper.Encrypt("cher@me.com") },
+                    new Customer { CustomerName = "Davenport, Dionne", CustomerPhone = EncryptionHelper.Encrypt("0742670934"), CustomerEmail = EncryptionHelper.Encrypt("dd@me.com") }
                 );
                 await db.SaveChangesAsync();
                 Console.WriteLine("Seeded customers db");

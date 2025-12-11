@@ -14,14 +14,9 @@ namespace BK_eShop.Helpers
         {
             using var db = new ShopContext();
 
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-
             var allOrders = await db.Orders.AsNoTracking()
                 .Include(x => x.Customer)
                 .OrderBy(order => order.OrderId).ToListAsync();
-
-            sw.Stop();
-            Console.WriteLine($"Total query time: {sw.ElapsedMilliseconds} ms");
 
             Console.WriteLine("\nOrder Id | Order date | Status | Customer name | Total amount");
 

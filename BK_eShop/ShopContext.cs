@@ -35,7 +35,6 @@ namespace BK_eShop
                 c.Property(x => x.CustomerName).IsRequired().HasMaxLength(150);
                 c.Property(x => x.CustomerPhone).IsRequired();
                 c.Property(x => x.CustomerEmail).IsRequired().HasMaxLength(150);
-                c.Property(x => x.CustomerPassword).IsRequired();
 
                 // Is unique
                 c.HasIndex(x => x.CustomerEmail).IsUnique();
@@ -110,14 +109,6 @@ namespace BK_eShop
                 // Is unique
                 t.HasIndex(x => x.CategoryName).IsUnique();                
             });
-
-            // Index used for Order list
-            // modelBuilder.Entity<Order>().HasIndex(o => o.OrderDate);
-            // modelBuilder.Entity<Order>().HasIndex(o => o.CustomerId);
-
-            // Index used for Product list
-            // modelBuilder.Entity<Product>().HasIndex(p => p.ProductId);
-            // modelBuilder.Entity<Product>().HasIndex(p => p.CategoryId);
         }
     }
 }
