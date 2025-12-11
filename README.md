@@ -85,3 +85,6 @@ When running the application, the console will guide you with available commands
   * Entity Framework Core
   * SQLite
   * C# Console Application
+ 
+<img width="1217" height="917" alt="BK_eShop_ER" src="https://github.com/user-attachments/assets/d6fce949-a8db-41ad-a755-39a2fb5bfb32" />
+    
