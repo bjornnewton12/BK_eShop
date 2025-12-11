@@ -5,6 +5,9 @@ BK eShop is a console-based e-commerce application built with .NET 8, Entity Fra
 ### Entity Framework Core Modeling
 The app uses EF Core to define a relational schema consisting of Customers, Orders, OrderRows, Products, and Categories.
 Navigation properties and foreign keys illustrate one-to-many relationships.
+### ER-diagram
+<img width="1217" height="917" alt="BK_eShop_ER" src="https://github.com/user-attachments/assets/3273388a-6dc5-4e4d-9b5d-ab2df6d7a690" />
+
 ### Triggers
 Order totals are automatically calculated using SQLite triggers that run after inserting, updating, or deleting order rows.
 ### CRUD
@@ -69,6 +72,3 @@ Allowed only if no products are currently using it.
   * Entity Framework Core
   * SQLite
   * C# Console Application
- 
-<img width="1217" height="917" alt="BK_eShop_ER" src="https://github.com/user-attachments/assets/d6fce949-a8db-41ad-a755-39a2fb5bfb32" />
-    
